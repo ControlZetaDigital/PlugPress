@@ -69,6 +69,9 @@ Class PlugPress {
         self::include_files();
         self::set_locale();
 
+		PlugPress_Plugs_Controller::init();
+		print_r(PlugPress_Plugs_Controller::get_plugs());
+
         PlugPress_Loader::run();
     }
 
@@ -133,7 +136,7 @@ Class PlugPress {
             $includes = glob( "$path/*.php" );
             sort( $includes );
 
-            foreach ( $includes as $filename ) {            
+            foreach ( $includes as $filename ) {
                 $file = basename( $filename, '.php' );
                 if ( file_exists( $filename ) && $file != 'index' )
                     require_once( $filename );
