@@ -48,4 +48,20 @@ abstract class PlugPress_Plug {
 
     public function __construct() {}
 
+	public function get_id() {
+		return $this->id;
+	}
+
+	public function get_type() {
+		return $this->plug_type;
+	}
+
+	public function get_data() {
+		return $this->data;
+	}
+
+	public function run() {
+        
+    }
+
 }

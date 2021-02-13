@@ -9,3 +9,8 @@ License: GPLv2 or later
 */
 
 defined( 'ABSPATH' ) || exit;
+
+require $plug_path . "/includes/class-{$plug_id}.php";
+
+$plug = new Plug_CustomPostTypes( $plug_data );
+$plug->run();

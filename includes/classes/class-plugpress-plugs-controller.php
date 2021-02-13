@@ -89,26 +89,19 @@ class PlugPress_Plugs_Controller {
                 'version'       => $plug_info['version'],
                 'plug_path'     => self::$path . "/{$plug}",
                 'plug_url'      => PLUGPRESS_URL . "plugs/{$plug}",
-                'exec_path'     => self::$path . "/{$plug}/{$plug}.php"
+                'exec_path'     => self::$path . "/{$plug}/{$plug}.php",
+                'name_space'    => str_replace( "-", "", ucwords( $plug, "-" ) )
             );
         }
 
         return $plugs_width_data;
     }
-
-    protected static function include_plugs() {
-        foreach(self::$plugs as $plug) {
-            require_once $plug['exec_path'];
-        }
-    }
-
 }
 
 class Plugs extends PlugPress_Plugs_Controller {
 
     public static function init() {
         self::$plugs = self::get_plugs_with_data();
-        self::include_plugs();
     }
 
     public static function get_plugs() {

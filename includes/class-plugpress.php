@@ -67,10 +67,18 @@ Class PlugPress {
         self::$plugin = PLUGPRESS_PLUGIN;
 
         self::include_files();
-        self::set_locale();
+		self::include_plugs();
+		self::set_locale();
 
-		PlugPress\PC\Plugs::init();
         PlugPress_Loader::run();
+    }
+
+	protected static function include_plugs() {
+		PlugPress\PC\Plugs::init();
+        foreach(PlugPress\PC\Plugs::get_plugs() as $plug_data) {
+			extract($plug_data);
+            require_once $exec_path;
+        }
     }
 
 	/**
