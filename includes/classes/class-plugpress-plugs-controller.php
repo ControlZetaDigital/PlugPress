@@ -18,6 +18,8 @@
  * @author     Control Zeta <code@controlzetadigital.com>
  */
 
+namespace PlugPress\PC;
+
 defined( 'ABSPATH' ) || exit;
 
 class PlugPress_Plugs_Controller {
@@ -25,14 +27,6 @@ class PlugPress_Plugs_Controller {
     protected static $path = PLUGPRESS_PATH . 'plugs';
 
     protected static $plugs = array();
-
-    public static function init() {
-        self::$plugs = self::get_plugs_with_data();
-    }
-
-    public static function get_plugs() {
-        return self::$plugs;
-    }
 
     public static function find_plugs() {
         $plugs_path = self::$path;
@@ -89,14 +83,35 @@ class PlugPress_Plugs_Controller {
         foreach ($plugs as $plug) {
             $plug_info = self::get_plug_info( $plug );
             $plugs_width_data[] = array(
-                'plug_id' => $plug,
-                'plug_name' => $plug_info['plug_name'],
-                'description' => $plug_info['description'],
-                'version' => $plug_info['version']
+                'plug_id'       => $plug,
+                'plug_name'     => $plug_info['plug_name'],
+                'description'   => $plug_info['description'],
+                'version'       => $plug_info['version'],
+                'plug_path'     => self::$path . "/{$plug}",
+                'plug_url'      => PLUGPRESS_URL . "plugs/{$plug}",
+                'exec_path'     => self::$path . "/{$plug}/{$plug}.php"
             );
         }
 
         return $plugs_width_data;
     }
 
+    protected static function include_plugs() {
+        foreach(self::$plugs as $plug) {
+            require_once $plug['exec_path'];
+        }
+    }
+
+}
+
+class Plugs extends PlugPress_Plugs_Controller {
+
+    public static function init() {
+        self::$plugs = self::get_plugs_with_data();
+        self::include_plugs();
+    }
+
+    public static function get_plugs() {
+        return self::$plugs;
+    }
 }

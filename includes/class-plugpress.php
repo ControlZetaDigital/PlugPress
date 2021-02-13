@@ -68,9 +68,7 @@ Class PlugPress {
 
         self::include_files();
         self::set_locale();
-
-		PlugPress_Plugs_Controller::init();
-		print_r(PlugPress_Plugs_Controller::get_plugs());
+		self::init_plugs();
 
         PlugPress_Loader::run();
     }
@@ -115,32 +113,55 @@ Class PlugPress {
 	 * @access   public
 	 */
     private static function include_files() {
-        self::include('classes');
-        self::include('functions');
+        self::include_dir('classes');
+        self::include_dir('functions');
     }
 
     /**
-	 * Include all php files inside a given folder
+	 * Include all php files inside a given directory
 	 *
 	 * @since    1.0.0
 	 * @access   public
-     * @param    mixed     $folders      Array / String of folders
+     * @param    mixed     $directories      Array / String of directories
 	 */
-    private static function include( $folders ) {
-        if (!is_array($folders))
-            $folders = array($folders);
+    private static function include_dir( $directories ) {
+        if (!is_array($directories))
+            $directories = array($directories);
             
-        foreach ($folders as $folder) {    
-            $path = PLUGPRESS_PATH . 'includes/' . $folder;
+        foreach ($directories as $directory) {    
+            $path = PLUGPRESS_PATH . 'includes/' . $directory;
 
             $includes = glob( "$path/*.php" );
             sort( $includes );
 
             foreach ( $includes as $filename ) {
-                $file = basename( $filename, '.php' );
-                if ( file_exists( $filename ) && $file != 'index' )
+                $file_name = basename( $filename, '.php' );
+                if ( file_exists( $filename ) && $file_name != 'index' )
                     require_once( $filename );
             }
         }
     }
+
+	/**
+	 * Include all php files
+	 *
+	 * @since    1.0.0
+	 * @access   public
+     * @param    mixed     $files      Array / String of files
+	 */
+    private static function include( $files, $dir = 'includes' ) {
+        if (!is_array($files))
+            $files = array($files);
+            
+        foreach ($files as $file) {
+            $filename = PLUGPRESS_PATH . "{$dir}/{$file}.php";
+			$file_name = basename( $filename, '.php' );
+			if ( file_exists( $filename ) && $file != 'index' )
+				require_once( $filename );
+        }
+    }
+
+	private static function init_plugs() {
+		PlugPress\PC\Plugs::init();
+	}
 }
