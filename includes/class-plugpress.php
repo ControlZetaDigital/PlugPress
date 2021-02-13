@@ -68,8 +68,8 @@ Class PlugPress {
 
         self::include_files();
         self::set_locale();
-		self::init_plugs();
 
+		PlugPress\PC\Plugs::init();
         PlugPress_Loader::run();
     }
 
@@ -160,8 +160,4 @@ Class PlugPress {
 				require_once( $filename );
         }
     }
-
-	private static function init_plugs() {
-		PlugPress\PC\Plugs::init();
-	}
 }
