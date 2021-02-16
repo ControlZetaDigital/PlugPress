@@ -56,8 +56,8 @@ abstract class PlugPress_Plug {
     protected $data = array();
 
     public function __construct( $data ) {
-        if ( defined( 'PLUGPRESS_VERSION' ) ) {
-            $this->version = PLUGPRESS_VERSION;
+        if ( isset( $data['version'] ) ) {
+            $this->version = $data['version'];
         } else {
             $this->version = '1.0.0';
         }
@@ -78,8 +78,24 @@ abstract class PlugPress_Plug {
 		return $this->plug_type;
 	}
 
-	public function get_data() {
-		return $this->data;
+	public function get_data( $key = '' ) {
+		return ($key != '' && isset($this->data[$key])) ? $this->data[$key] : $this->data;
+	}
+
+	public function get_name() {
+		return $this->get_data('plug_name');
+	}
+
+	public function get_description() {
+		return $this->get_data('description');
+	}
+
+	public function get_author() {
+		return $this->get_data('author');
+	}
+
+	public function get_author_uri() {
+		return $this->get_data('author_uri');
 	}
 
 	public function run() {

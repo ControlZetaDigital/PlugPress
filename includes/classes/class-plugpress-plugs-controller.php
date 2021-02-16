@@ -66,6 +66,12 @@ class PlugPress_Plugs_Controller {
                         $info_data['description'] = str_replace('Description: ', '', $line);
                     if (strpos($line, 'Version: ') !== false)
                         $info_data['version'] = str_replace('Version: ', '', $line);
+                    if (strpos($line, 'Author: ') !== false)
+                        $info_data['author'] = str_replace('Author: ', '', $line);
+                    if (strpos($line, 'Author URI: ') !== false)
+                        $info_data['author_uri'] = str_replace('Author URI: ', '', $line);
+                    if (strpos($line, 'License: ') !== false)
+                        $info_data['license'] = str_replace('License: ', '', $line);                        
                 }
 
                 return $info_data;
@@ -87,6 +93,8 @@ class PlugPress_Plugs_Controller {
                 'plug_name'     => $plug_info['plug_name'],
                 'description'   => $plug_info['description'],
                 'version'       => $plug_info['version'],
+                'author'        => $plug_info['author'],
+                'author_uri'    => $plug_info['author_uri'],
                 'plug_path'     => self::$path . "/{$plug}",
                 'plug_url'      => PLUGPRESS_URL . "plugs/{$plug}",
                 'exec_path'     => self::$path . "/{$plug}/{$plug}.php",
