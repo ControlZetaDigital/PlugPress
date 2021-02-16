@@ -1,21 +1,12 @@
 <?php
-
 /**
  * Define methods for manage plugs
  *
  * @link       http://controlzetadigital.com
- * @since      1.0.0
- * @package    PlugPress
- * @subpackage PlugPress/includes/classes
- */
-
-/**
- * Define methods for manage plugs
- *
- * @since      1.0.0
- * @package    PlugPress
- * @subpackage PlugPress/includes/classes
  * @author     Control Zeta <code@controlzetadigital.com>
+ * @since      1.0.0
+ * @package    PlugPress
+ * @subpackage PlugPress/includes/classes
  */
 
 namespace PlugPress\PC;
@@ -97,8 +88,7 @@ class PlugPress_Plugs_Controller {
                 'author_uri'    => $plug_info['author_uri'],
                 'plug_path'     => self::$path . "/{$plug}",
                 'plug_url'      => PLUGPRESS_URL . "plugs/{$plug}",
-                'exec_path'     => self::$path . "/{$plug}/{$plug}.php",
-                'name_space'    => str_replace( "-", "", ucwords( $plug, "-" ) )
+                'exec_path'     => self::$path . "/{$plug}/{$plug}.php"
             );
         }
 

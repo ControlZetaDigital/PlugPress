@@ -69,17 +69,11 @@ Class PlugPress {
         self::include_files();
 		self::include_plugs();
 		self::set_locale();
+		self::setup_admin_context();
+		self::setup_public_context();
 
         PlugPress_Loader::run();
-    }
-
-	protected static function include_plugs() {
-		PlugPress\PC\Plugs::init();
-        foreach(PlugPress\PC\Plugs::get_plugs() as $plug_data) {
-			extract($plug_data);
-            require_once $exec_path;
-        }
-    }
+    }	
 
 	/**
 	 * Return plugin's version
@@ -118,18 +112,20 @@ Class PlugPress {
 	 * Include all classes, functions and helpers
 	 *
 	 * @since    1.0.0
-	 * @access   public
+	 * @access   private
 	 */
     private static function include_files() {
         self::include_dir('classes');
         self::include_dir('functions');
+        self::include('class-plugpress-admin', 'admin');
+        self::include('class-plugpress-public', 'public');
     }
 
     /**
 	 * Include all php files inside a given directory
 	 *
 	 * @since    1.0.0
-	 * @access   public
+	 * @access   private
      * @param    mixed     $directories      Array / String of directories
 	 */
     private static function include_dir( $directories ) {
@@ -154,7 +150,7 @@ Class PlugPress {
 	 * Include all php files
 	 *
 	 * @since    1.0.0
-	 * @access   public
+	 * @access   private
      * @param    mixed     $files      Array / String of files
 	 */
     private static function include( $files, $dir = 'includes' ) {
@@ -168,4 +164,44 @@ Class PlugPress {
 				require_once( $filename );
         }
     }
+
+	/**
+	 * Include and load plugs
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private static function include_plugs() {
+		PlugPress\PC\Plugs::init();
+        foreach(PlugPress\PC\Plugs::get_plugs() as $plug_data) {
+			extract($plug_data);
+            require_once $exec_path;
+        }
+    }
+
+	/**
+	 * Setup admin hooks and logic
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private static function setup_admin_context() {
+		$admin = 'PlugPress_Admin';
+
+		PlugPress_Loader::add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
+		PlugPress_Loader::add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts' );
+	}
+
+	/**
+	 * Setup public hooks and logic
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private static function setup_public_context() {
+		$public = 'PlugPress_Public';
+
+		PlugPress_Loader::add_action( 'wp_enqueue_scripts', $public, 'enqueue_styles' );
+		PlugPress_Loader::add_action( 'wp_enqueue_scripts', $public, 'enqueue_scripts' );
+	}
 }
