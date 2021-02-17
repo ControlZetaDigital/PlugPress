@@ -187,9 +187,29 @@ Class PlugPress {
 	 */
 	private static function setup_admin_context() {
 		$admin = 'PlugPress_Admin';
+		$loader = 'PlugPress_Loader';
+		
+		$admin::init();
 
-		PlugPress_Loader::add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
-		PlugPress_Loader::add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts' );
+		self::setup_admin_ui();
+		self::setup_ajax_controls();
+	}
+
+	private static function setup_admin_ui() {
+		$admin = 'PlugPress_Admin';
+		$loader = 'PlugPress_Loader';
+
+		$loader::add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
+		$loader::add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts' );
+		$loader::add_action( 'admin_menu', $admin, 'add_admin_menu' );
+	}
+
+	private static function setup_ajax_controls() {
+		$admin = 'PlugPress_Admin';
+		$loader = 'PlugPress_Loader';
+		$plug_settings = 'PlugPress\Settings\Plugs';
+
+		$loader::add_action( 'wp_ajax_update_setting', $plug_settings, 'update_setting' );
 	}
 
 	/**
@@ -200,8 +220,9 @@ Class PlugPress {
 	 */
 	private static function setup_public_context() {
 		$public = 'PlugPress_Public';
+		$loader = 'PlugPress_Loader';
 
-		PlugPress_Loader::add_action( 'wp_enqueue_scripts', $public, 'enqueue_styles' );
-		PlugPress_Loader::add_action( 'wp_enqueue_scripts', $public, 'enqueue_scripts' );
+		$loader::add_action( 'wp_enqueue_scripts', $public, 'enqueue_styles' );
+		$loader::add_action( 'wp_enqueue_scripts', $public, 'enqueue_scripts' );
 	}
 }

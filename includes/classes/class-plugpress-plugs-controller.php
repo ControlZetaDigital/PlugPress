@@ -105,4 +105,9 @@ class Plugs extends PlugPress_Plugs_Controller {
     public static function get_plugs() {
         return self::$plugs;
     }
+
+    public static function get_plug($id) {
+        $key = array_search($id, array_column(self::$plugs, 'plug_id'));
+        return ($key !== false) ? self::$plugs[$key] : false;
+    }
 }
